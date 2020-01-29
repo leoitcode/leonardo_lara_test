@@ -18,20 +18,20 @@ The great advantage of this structure is the scalability, flexibility and resili
 
 # How it works
 
-## -> COMPONENTS
+### -> COMPONENTS
 
 SERVER: (HTTP GET/POST)
 CLIENTS: (CANADA,USA,BRAZIL)
 SERVICES: (canada_client,usa_client,brazil_client)
 
 
-## -> ENDPOINTS
+### -> ENDPOINTS
 
 POST: {ip_server}:8000/post/<string:client_aim>
 GET: {ip_server}:8000/cache/<string:client_aim>/<string:code>
 
 
-## -> GET/POST
+### -> GET/POST
 
 The Server receive requests by GET/POST
 
@@ -45,19 +45,19 @@ Through the RPC the client is able to send its cache to the endpoint.
 The server add the data into its own cache or send to specific client.
 (Clients Services add_cache())
 
-## -> SERVER
+### -> SERVER
 
 The SERVER has 2 decorators http from Nameko library exposing 2 entry points.
 (do_post() & get_cache())
 Whatsmore, it has add_cache() to add new data into cache, and also expire_cache() to delete unnecessary caches.
 
 
-## -> CLIENTS
+### -> CLIENTS
 
 Clients services manage its own caches and deliver some data to server.
 They have add_cache(), get_cache() and expire_cache() functions
 
 
-## -> MISSING FUNCTIONALITIES
+### -> MISSING FUNCTIONALITIES
 
 Locality of reference, data should almost always be available from the closest region
