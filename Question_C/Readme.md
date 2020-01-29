@@ -7,31 +7,31 @@ The great advantage of this structure is the scalability, flexibility and resili
 
 # Installation
 
-- Create virtual environment: python3 -m venv name
-- Install Required packages: pip3 install -r Requirements.txt
 - Install Docker ([LINK](https://docs.docker.com/install/))
-- Pull and Run RabbitMQ Service >> ($ docker run -p 5672:5672 --hostname nameko-rabbitmq rabbitmq:3)
-- Start all services >> (nameko run clients)
-- Interact on Port 8000 using CURL or POSTMAN.
+- Install Docker-compose
+- On the root execute ($ docker-compose up)
+- Access Server HTTP exposed PORT 8000
 
 ![](images/imagem2.jpg)
 ![](images/imagem3.jpg)
 
 
-
 # How it works
 
-### - COMPONENTS
+### - Components
 
 SERVER: (HTTP GET/POST)  
 CLIENTS: (CANADA,USA,BRAZIL)  
 SERVICES: (canada_client,usa_client,brazil_client)  
 
 
-### - ENDPOINTS
+### - Endpoints
 
 POST: {ip_server}:8000/post/<string:client_aim>  
 GET: {ip_server}:8000/cache/<string:client_aim>/<string:code>
+
+client_aim: The target client for Post or Get
+code: The code to be stored in client_aim's cache
 
 
 ### - GET/POST
@@ -48,19 +48,19 @@ Through the RPC the client is able to send its cache to the endpoint.
 The server add the data into its own cache or send to specific client.
 (Clients Services add_cache())
 
-### - SERVER
+### - Server
 
 The SERVER has 2 decorators http from Nameko library exposing 2 entry points.
 (do_post() & get_cache())
 Whatsmore, it has add_cache() to add new data into cache, and also expire_cache() to delete unnecessary caches.
 
 
-### - CLIENTS
+### - Clients
 
 Clients services manage its own caches and deliver some data to server.
 They have add_cache(), get_cache() and expire_cache() functions
 
 
-### - MISSING FUNCTIONALITIES
+### - Missing Functionalities
 
 Locality of reference, data should almost always be available from the closest region
