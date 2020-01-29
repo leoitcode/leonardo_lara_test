@@ -14,6 +14,9 @@ The great advantage of this structure is the scalability, flexibility and resili
 - Start all services >> (nameko run clients)
 - Interact on Port 8000 using CURL or POSTMAN.
 
+![](images/imagem2.jpg)
+![](images/imagem3.jpg)
+
 
 
 # How it works
