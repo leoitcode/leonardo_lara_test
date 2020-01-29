@@ -1,0 +1,64 @@
+
+version: "2"
+services:
+
+services:
+  
+  rabbit:
+    container_name: nameko-example-rabbitmq
+    image: rabbitmq:3.7-management
+    ports:
+        - "15673:15672" # Exposing RabbitMQ web management on different port for convenience
+    restart: always
+
+  server:
+    build:
+      context: server
+    depends_on:
+      - waitforrabbit
+    ports:
+      - "8000:8000"
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "my-rabbit"
+        RABBIT_PORT: "5672"
+
+  canada:
+    build:
+      context: can
+    depends_on:
+      - waitforrabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "my-rabbit"
+        RABBIT_PORT: "5672"
+
+  usa:
+    build:
+      context: usa
+    depends_on:
+      - waitforrabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "my-rabbit"
+        RABBIT_PORT: "5672"
+
+  brazil:
+    build:
+      context: bra
+    depends_on:
+      - waitforrabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "my-rabbit"
+        RABBIT_PORT: "5672"
+
+  waitforrabbit:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - rabbit
+    command: rabbit:5672
