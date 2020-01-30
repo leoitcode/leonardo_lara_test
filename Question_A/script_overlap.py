@@ -14,7 +14,7 @@ if __name__ == '__main__':
 	exit = False
 
 	try:
-		if sys.argv[1] == 'test':
+		if sys.argv[1] == '-test':
 			os.system("python3 test.py")
 			exit=True
 
