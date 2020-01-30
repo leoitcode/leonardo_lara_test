@@ -16,14 +16,11 @@ The great advantage of this structure is the scalability, flexibility and resili
 ![](images/imagem3.jpg)
 
 
-<<<<<<< HEAD
 # Docker-Compose
 
 I started to make a compose structure on "DOCKER-COMPOSE" feature branch.
 
 
-=======
->>>>>>> release/0.1.0
 # How it works
 
 ### - Components
