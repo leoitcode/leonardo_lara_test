@@ -1,14 +1,13 @@
 
 version: "2"
-services:
 
 services:
   
   rabbit:
-    container_name: nameko-example-rabbitmq
     image: rabbitmq:3.7-management
     ports:
-        - "15673:15672" # Exposing RabbitMQ web management on different port for convenience
+        - "15673:15672"
+        - "5672:5672"
     restart: always
 
   server:
@@ -21,10 +20,10 @@ services:
     environment:
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
-        RABBIT_HOST: "my-rabbit"
+        RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
-  canada:
+  can:
     build:
       context: can
     depends_on:
@@ -32,7 +31,7 @@ services:
     environment:
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
-        RABBIT_HOST: "my-rabbit"
+        RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
   usa:
@@ -43,10 +42,10 @@ services:
     environment:
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
-        RABBIT_HOST: "my-rabbit"
+        RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
-  brazil:
+  bra:
     build:
       context: bra
     depends_on:
@@ -54,7 +53,7 @@ services:
     environment:
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
-        RABBIT_HOST: "my-rabbit"
+        RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
   waitforrabbit:

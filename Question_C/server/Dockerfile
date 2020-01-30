@@ -11,4 +11,4 @@ COPY server.py ./
 
 COPY config.yml ./
 
-RUN nameko run --config config.yml server
+CMD ["nameko", "run", "--config", "config.yml", "server"]

@@ -11,5 +11,4 @@ COPY client_CAN.py ./
 
 COPY config.yml ./
 
-RUN nameko run --config config.yml client_CAN
-
+CMD ["nameko", "run", "--config", "config.yml", "client_CAN"]

@@ -11,4 +11,4 @@ COPY client_BRA.py ./
 
 COPY config.yml ./
 
-RUN nameko run --config config.yml client_BRA
+CMD ["nameko", "run", "--config", "config.yml", "client_BRA"]

@@ -11,4 +11,4 @@ COPY client_USA.py ./
 
 COPY config.yml ./
 
-RUN nameko run --config config.yml client_USA
+CMD ["nameko", "run", "--config", "config.yml", "client_USA"]
