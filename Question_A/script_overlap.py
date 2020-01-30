@@ -1,10 +1,11 @@
-from overlap import isOverlap
-from subprocess import Popen
-
 import re
 import sys
 import ast
 import os
+
+from overlap import isOverlap
+from subprocess import Popen
+
 
 #Main Process
 if __name__ == '__main__':
@@ -21,8 +22,7 @@ if __name__ == '__main__':
 	except:
 		pass
 
-	if exit:
-		sys.exit()
+	sys.exit() if exit else None
 
 	try:
 

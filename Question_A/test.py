@@ -7,41 +7,56 @@ from subprocess import Popen
 #Main Process
 if __name__ == '__main__':
 
-        filename = sys.argv[0]
+        
+    # Get the current file name
+    filename = sys.argv[0]
+    exit = False
 
-        def check_input(*args):
+    def check_input(*args):
 
-                _tmp = []
+        ''' Check if each arg (start,stop,nloop) is a interger or float and convert
+            INPUT: Arguments to be analyzed
+            OUTPUT: List with converted strings
+        '''
+        
+        global exit
 
-                for entry in args:
+        _tmp = []
 
-                        try:
-                                entry = int(entry)
-                                _tmp.append(entry)
+        sys.exit() if exit else None
+
+        for entry in args:
+
+            try:
+                entry = int(entry)
+                _tmp.append(entry)
+
+            #If it's not a int
+            except ValueError:
+
+                try:
+                    entry = float(entry)
+                    _tmp.append(entry)
+
+                #If it's not a float
+                except ValueError:
+
+                    print("No.. input is not a number. Try again")
+
+                    # Subprocess reopening the test.py
+                    p = Popen("python3 " + filename, shell=True)
+                    p.wait()
+                    exit = True
+
+        return _tmp
 
 
+    start = input("Enter the start point for testing: ")
+    stop = input("Enter the end point for testing: ")
+    nloop = input("Enter the quantity of tests: ")
 
-                        except ValueError:
+    start,stop,nloop = check_input(start,stop,nloop)
 
-                                try:
-                                        entry = float(entry)
-                                        _tmp.append(entry)
+    sys.exit() if exit else None
 
-                                except ValueError:
-
-                                        print("No.. input is not a number. Try again")
-                                        p = Popen("python3 " + filename, shell=True)
-                                        p.wait()
-
-                return _tmp
-
-
-        start = input("Enter the start point for testing: ")
-        stop = input("Enter the end point for testing: ")
-        nloop = input("Enter the quantity of tests: ")
-
-        start,stop,nloop = check_input(start,stop,nloop)
-
-        overlap_test(start,stop,nloop)
-
-        raise SystemExit
+    overlap_test(start,stop,nloop)
