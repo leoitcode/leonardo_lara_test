@@ -4,13 +4,25 @@ from subprocess import Popen
 import re
 import sys
 import ast
+import os
 
 #Main Process
 if __name__ == '__main__':
 
 	#Get the current file name
 	filename = sys.argv[0]
+	exit = False
 
+	try:
+		if sys.argv[1] == 'test':
+			os.system("python3 test.py")
+			exit=True
+
+	except:
+		pass
+
+	if exit:
+		sys.exit()
 
 	try:
 
@@ -19,7 +31,7 @@ if __name__ == '__main__':
 		coord2 = input("Enter the x-axis coordinates of the Line 2 [Format: (x3,x4)]: ")
 
 		#Create a regex pattern: (number,number)
-		pattern = re.compile("(\(\d+\.?\d*,\d+\.?\d*\))")
+		pattern = re.compile("(\(-?\d+\.?\d*,-?\d+\.?\d*\))")
 
 		
 		#Check if the first line coordinates are in the pattern
@@ -29,6 +41,7 @@ if __name__ == '__main__':
 			print("These coordinates aren't on pattern (x1,x2)")
 			p = Popen("python3 " + filename, shell=True)
 			p.wait()
+			raise Exception
 
 
 		#Check if the second line coordinates are in the pattern
@@ -38,6 +51,7 @@ if __name__ == '__main__':
 			print("These coordinates aren't on pattern (x3,x4)")
 			p = Popen("python3 " + filename, shell=True)
 			p.wait()
+			raise Exception
 			
 		#Transform the string meaning to tuple type
 		coord1,coord2 = ast.literal_eval(coord1),ast.literal_eval(coord2)
@@ -52,10 +66,7 @@ if __name__ == '__main__':
 
 	except Exception as e:
 
-		print('There is something wrong with coordinates try again.')
-		print(f'Error: {e}')
-		p = Popen("python3 " + filename, shell=True)
-		p.wait()
+		print('Please Restart the program..')
 
 
 
