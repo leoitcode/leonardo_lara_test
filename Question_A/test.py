@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import ast
 import sys
 
@@ -60,3 +61,11 @@ if __name__ == '__main__':
     sys.exit() if exit else None
 
     overlap_test(start,stop,nloop)
+=======
+from random import seed
+from random import randint
+from overlap import isOverlap
+
+
+
+>>>>>>> master
