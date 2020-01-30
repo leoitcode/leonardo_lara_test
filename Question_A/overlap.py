@@ -33,35 +33,35 @@ def isOverlap(line1,line2):
 
 def overlap_test(start,stop,nloop):
 
-        x,_tmp = [],[]
+    x,_tmp = [],[]
 
-        if isinstance(start,int) & isinstance(stop,int):
+    if isinstance(start,int) & isinstance(stop,int):
 
-                for _ in range(4):
-                        for _ in range(nloop):
-                                _tmp.append(randint(start,stop))
+            for _ in range(4):
+                    for _ in range(nloop):
+                            _tmp.append(randint(start,stop))
 
-                        x.append(_tmp)
-                        _tmp = []
+                    x.append(_tmp)
+                    _tmp = []
 
-        else:
-                for _ in range(4):
-                        for _ in range(nloop):
-                                _tmp.append(round(uniform(start,stop),1))
+    else:
+            for _ in range(4):
+                    for _ in range(nloop):
+                            _tmp.append(round(uniform(start,stop),1))
 
-                        x.append(_tmp)
-                        _tmp = []
+                    x.append(_tmp)
+                    _tmp = []
 
 
-        x1,x2,x3,x4 = x
-        lines1 = list(zip(x1,x2))
-        lines2 = list(zip(x3,x4))
+    x1,x2,x3,x4 = x
+    lines1 = list(zip(x1,x2))
+    lines2 = list(zip(x3,x4))
 
-        for coord in range(nloop):
+    for coord in range(nloop):
 
-                line1,line2 = lines1[coord],lines2[coord]
+            line1,line2 = lines1[coord],lines2[coord]
 
-                if isOverlap(line1,line2):
-                        print(f'V [YES] The Line 1 {str(line1)} overlaps the Line 2 {str(line2)}')
-                else:
-                        print(f'X [NOT] The Line 1 {str(line1)} not overlaps the Line 2 {str(line2)}')
+            if isOverlap(line1,line2):
+                    print(f'V [YES] The Line 1 {str(line1)} overlaps the Line 2 {str(line2)}')
+            else:
+                    print(f'X [NOT] The Line 1 {str(line1)} not overlaps the Line 2 {str(line2)}')
