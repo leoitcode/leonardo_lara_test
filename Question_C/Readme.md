@@ -16,11 +16,6 @@ The great advantage of this structure is the scalability, flexibility and resili
 ![](images/imagem3.jpg)
 
 
-# Docker-Compose
-
-I started to make a compose structure on "DOCKER-COMPOSE" feature branch.
-
-
 # How it works
 
 ### - Components
