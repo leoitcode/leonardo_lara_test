@@ -10,11 +10,11 @@ You'll have to insert the 2 coordinates in the line1 (x1,x2) and in the line2 (x
 
 In this mode you can visualize a graph showing the possible overlap or the distance between the two lines.
 
-![](../images/graph_overlap.png)
+![](/images/graph_overlap.png)
 
 
 - Run "python3 script_overlap.py -test"
 
 Using "test" parameter you can test the program within specified range (star and stop point) and how many times (loops) you want.,
 
-![](../images/test_overlap.png)
+![](/images/test_overlap.png)
