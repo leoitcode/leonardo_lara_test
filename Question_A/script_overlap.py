@@ -57,7 +57,7 @@ if __name__ == '__main__':
 		coord1,coord2 = ast.literal_eval(coord1),ast.literal_eval(coord2)
 
 		#Check if the lines are overlaped
-		if isOverlap(coord1,coord2):
+		if isOverlap(coord1,coord2,graph=True):
 			print("These lines are overlaped!")
 			
 		else:

@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from random import *
 from datetime import datetime as dtt
@@ -7,7 +8,7 @@ from datetime import datetime as dtt
 # Seed random number generator
 seed(dtt.now())
 
-def isOverlap(line1,line2):
+def isOverlap(line1,line2,graph=False):
 
     ''' This function check if two lines are overlapped
         Input: 2 tuples containing the coordinates
@@ -20,10 +21,24 @@ def isOverlap(line1,line2):
 
     x1,x2,x3,x4 = line1+line2
 
-    overlap = min(x2, x4) - max(x1, x3)
+    p1, p2 = min(x2,x4),max(x1,x3)
+
+    if graph:
+
+        if p1-p2 >=0:
+            print(f'--- Overlapped in {p2} -> {p1} in {p1-p2} distance')
+
+        plt.plot([x1, x2], [0, 0], 'k-', lw=2,marker='o')
+        plt.plot([x3, x4], [0, 0], 'r-', lw=2,marker='o')
+
+        x = [p1,p2,p2,p1]
+        y = [-2,-2,2,2]
+
+        plt.fill(x,y)
+        plt.show()
 
     # Returns True if was found some intersection between lines, or False
-    return True if overlap >=0 else False
+    return True if p1-p2 >=0 else False
 
 
 
@@ -44,8 +59,8 @@ def overlap_test(start,stop,nloop):
             for _ in range(nloop):
                 _tmp.append(randint(start,stop))
 
-                x.append(_tmp)
-                _tmp = []
+            x.append(_tmp)
+            _tmp = []
 
     else:
 
@@ -55,8 +70,8 @@ def overlap_test(start,stop,nloop):
 
                 _tmp.append(round(uniform(start,stop),1))
 
-                x.append(_tmp)
-                _tmp = []
+            x.append(_tmp)
+            _tmp = []
 
     # Unpack the four lists into x variables
     x1,x2,x3,x4 = x
