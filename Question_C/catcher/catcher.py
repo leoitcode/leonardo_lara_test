@@ -5,7 +5,7 @@ from nameko.rpc import RpcProxy,rpc
 from nameko.web.handlers import http
 
 class catcher:
-    name = 'catcher'
+    name = 'serv_catcher'
 
     controller = RpcProxy('controler'),
 
@@ -15,7 +15,16 @@ class catcher:
         if query:
 
             try:
-                self.controller.()
+                dicts = self.controller.controller(query)
+
+            except Exception as e:
+                print("Couldn't connect to Crawler Service")
+
+
+            return dicts
+
+
+
 
 
 
