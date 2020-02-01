@@ -1,12 +1,13 @@
 import json
 
 from flask import Flask, request
-from nameko.rpc import RpcProxy
-
+from flasgger import Swagger
+from nameko.standalone.rpc import ClusterRpcProxy
 
 app = Flask(__name__)
+Swagger(app)
 
-controller = RpcProxy('serv_controller')
+CONFIG = {'AMQP_URI': "amqp://guest:guest@localhost:5672"}
 
 
 @app.route('/crawler/<string:query>')
@@ -14,14 +15,18 @@ def get_query(query):
 
     if query:
 
+        print(query)
+
         try:
-            dicts = self.controller.control(query)
+
+            with ClusterRpcProxy(CONFIG) as rpc:
+                query = rpc.serv_controller.controller(query)
 
         except Exception as e:
             return "Couldn't connect to Crawler Service"
 
 
-        return dicts
+        return query
 
 
 if __name__ == '__main__':

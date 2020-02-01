@@ -13,9 +13,16 @@ class Controller:
 
 
     @rpc
-    def controller(self):
+    def controller(self,query):
 
-        
+        self.catcher.get_links.call_async()
+
+        self.crawler.get_crawls.call_async()
+
+        self.interpreter.get_insights.call_async()
+
+
+
 
 
 
