@@ -1,5 +1,6 @@
 from nameko.rpc import RpcProxy,rpc
 from redis import Redis
+from loguru import logger as log
 
 import json
 import time
@@ -19,13 +20,17 @@ class Controller:
     @rpc
     def controller(self,query,n_search):
 
+        log.info("-- STARTING CONTROLLER --")
+
         self.r.flushdb()
 
         self.r.delete("string")
 
-        print("Received sentence: "+query)
+        log.info(f"-- Received sentence: {query}")
 
         self.r.set("string",query)
+
+        log.info("-- STARTING SERVICES --")
 
         self.catcher.get_links.call_async(n_search)
         
@@ -42,7 +47,7 @@ class Controller:
 
                 ins = self.r.lpop("crawls")
 
-                print(ins)
+                log.info("Received Crawled page")
 
                 self.insights.append(ins)
 
@@ -51,7 +56,7 @@ class Controller:
 
 
             time.sleep(1)
-            print('Waiting for Data..')
+            log.info("-- WAITING FOR DATA...")
 
         return self.insights
 

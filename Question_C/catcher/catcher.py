@@ -5,6 +5,7 @@ from nameko.rpc import rpc
 from redis import Redis
 from urllib.parse import quote_plus
 from googlesearch import search
+from loguru import logger as log
 
 import time
 
@@ -17,6 +18,9 @@ class Catcher:
     @rpc
     def get_links(self,n_search):
 
+
+        log.info("-- STARTING CATCHER --")
+
         search_str = self.r.get('string')
         self.r.set("string",search_str)
 
@@ -27,6 +31,7 @@ class Catcher:
         #Generates links from google
         for url in search(search_str,stop=n_search):
 
+
             if self.isOnList(url):
                 continue
 
@@ -36,7 +41,7 @@ class Catcher:
 
 
             #Send the link to Redis DB with link1, link2.. keys
-            print(f"Link {url} has got with success!")
+            log.info(f"-- Link {url} has got with success!")
 
             #Time to avoid be blocked by Google
             time.sleep(2)
@@ -54,7 +59,7 @@ class Catcher:
             v = self.r.lindex("links", i)
 
             if v==urlb:
-                print("I already have this URL.")
+                log.warning(f"-- I already have this URL")
                 return True
 
         return False
