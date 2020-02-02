@@ -7,45 +7,66 @@ from nltk.tokenize import word_tokenize
 import time
 import requests
 import json
+import re
 
 
 class Crawler:
     name = 'serv_crawler'
 
-    r = Redis(host='localhost', port=6379, db=0)
+    r = Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
-    search_str = self.r.get('string')
+    soup = None
+    pattern = None
 
     @rpc
     def get_crawls(self):
 
         while True:
 
-            if r.llen("links")!=0:
+            if self.r.exists("links"):
 
-                link = r.lpop("links")
+                time.sleep(1)
+
+                link = self.r.lpop("links")
+
+                if not link:
+                    print(link)
+                    continue
+
                 self.crawl_page(link)
+                time.sleep(1)
+
+            time.sleep(1)
+
 
 
 
     def crawl_page(self,link):
 
+        search_str = self.r.get('string')
 
         useless_words = set(stopwords.words('english'))
 
-        search_str = word_tokenize(self.search_str)
+        print(search_str)
 
-        words = [s for s in search_str if not s in useless_words]
+        tsearch_str = word_tokenize(str(search_str))
 
-        pattern = r"(" + "|".join(words) + ")"
+        print(tsearch_str)
 
-        html_page = requests.get(link)
+        words = [s for s in tsearch_str if not s in useless_words]
 
-        soup = bs(html_page.content)
+        self.pattern = r"(" + "|".join(words) + ")"
 
-        tags_del = ['header','meta','head','script','style']
+        print("Querying page")
+        print(link)
 
-        for x in soup(tags_del):
+        response = requests.get(link)
+
+        self.soup = bs(response.text, "html.parser")
+
+        tags_del = ['header','meta','script','style']
+
+        for x in self.soup(tags_del):
             x.extract()
             
 
@@ -59,26 +80,32 @@ class Crawler:
 
         lists = self.extract_text(['li'])
 
-        result = {'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
+
+        initial_links = self.r.lrange("bak_links", 0, -1 )
+
+        result = {'links':initial_links,sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
 
         result = json.dumps(result)
 
-        r.rpush("crawls",result)
+        result = result.replace('\\"','"')
+        result = result.replace('\\\"','\\')
+
+        self.r.rpush("crawls",result)
 
 
 
-    def extract_text(*tags,trig=True):
+    def extract_text(self,*tags,trig=True):
 
         txts=None
         
         for tag in tags:
             
             if trig:
-                txts = soup.findAll(tag, text = re.compile(pattern,re.IGNORECASE))
+                txts = self.soup.findAll(tag, text = re.compile(self.pattern,re.IGNORECASE))
                 trig=False
                 continue
                 
-            txts+=soup.findAll(tag, text = re.compile(pattern,re.IGNORECASE))
+            txts+=self.soup.findAll(tag, text = re.compile(self.pattern,re.IGNORECASE))
         
         
         _tmp = []

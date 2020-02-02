@@ -22,13 +22,18 @@ def get_query(query):
         try:
 
             with ClusterRpcProxy(CONFIG) as rpc:
-                query = rpc.serv_controller.controller(query,num)
+                response = rpc.serv_controller.controller(query,num)
+                print("Query Complete")
 
         except Exception as e:
             return f"Couldn't connect to Crawler Service, error: {e}"
 
+        response = json.dumps(response)
+        response = response.replace('\\"','"')
+        resṕonse = response.replace('\\\\"','\\')
 
-        return query
+
+        return response
 
 
 if __name__ == '__main__':
