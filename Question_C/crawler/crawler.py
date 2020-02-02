@@ -2,7 +2,8 @@ from nameko.rpc import rpc
 from redis import Redis
 from bs4 import BeautifulSoup as bs
 from nltk.corpus import stopwords 
-from nltk.tokenize import word_tokenize 
+from nltk.tokenize import word_tokenize
+from loguru import logger as log
 
 import time
 import requests
@@ -21,6 +22,8 @@ class Crawler:
     @rpc
     def get_crawls(self):
 
+        log.info("-- STATING CRAWLER --")
+
         while True:
 
             if self.r.exists("links"):
@@ -30,12 +33,13 @@ class Crawler:
                 link = self.r.lpop("links")
 
                 if not link:
-                    print(link)
                     continue
 
                 self.crawl_page(link)
                 time.sleep(1)
 
+
+            log.info("Waiting for Links...")
             time.sleep(1)
 
 
@@ -47,20 +51,19 @@ class Crawler:
 
         useless_words = set(stopwords.words('english'))
 
-        print(search_str)
-
         tsearch_str = word_tokenize(str(search_str))
-
-        print(tsearch_str)
 
         words = [s for s in tsearch_str if not s in useless_words]
 
         self.pattern = r"(" + "|".join(words) + ")"
 
-        print("Querying page")
-        print(link)
+        log.debug(f"Querying page: {link}")
 
         response = requests.get(link)
+
+        if not response:
+            log.warning(f"Was impossible to get from link: {link}")
+            return
 
         self.soup = bs(response.text, "html.parser")
 
@@ -83,7 +86,7 @@ class Crawler:
 
         initial_links = self.r.lrange("bak_links", 0, -1 )
 
-        result = {'links':initial_links,sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
+        result = {'links':initial_links,'sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
 
         result = json.dumps(result)
 
