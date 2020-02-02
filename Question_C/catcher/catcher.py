@@ -22,23 +22,39 @@ class Catcher:
         #Transform the string into a URL Standard
         search_str = quote_plus(search_str)
 
-        count=1
-
         #Generates links from google
         for url in search(search_str,stop=n_search):
 
+            if isOnList(url):
+                continue
+
+            #Add in Redis "links" list
+            r.rpush("links",url)
+            r.rpush("bak_links",url)
+
 
             #Send the link to Redis DB with link1, link2.. keys
-            lnk_n = str(count)
-            self.r.set("link"+lnk_n,url,ex=5)
-
-            self.r.set("res_link"+lnk_n,url,ex=5)
-
-            count+=1
             print(f"Link {url} has got with success!")
 
             #Time to avoid be blocked by Google
             time.sleep(2)
 
+        return 
 
-        return
+
+
+    def isOnList(self,url):
+
+        urlb = url.encode()
+
+        for i in range(0, r.llen("links")+1):
+    
+            v = r.lindex("links", i)
+
+            if v==urlb:
+                print("I already have this URL.")
+                return True
+
+        return False
+
+

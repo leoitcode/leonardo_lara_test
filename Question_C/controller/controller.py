@@ -24,9 +24,9 @@ class Controller:
         
         self.crawler.get_crawls.call_async()
 
-        #self.interpreter.get_insights.call_async()
+        r.rpush("crawls",result)
 
-        return "Deu certo"
+        
 
 
 
