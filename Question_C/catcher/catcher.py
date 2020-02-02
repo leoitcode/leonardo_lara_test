@@ -1,30 +1,42 @@
-import json
-import random
 
-from nameko.rpc import RpcProxy,rpc
-from nameko.web.handlers import http
+import requests
 
-class catcher:
+from nameko.rpc import rpc
+from redis import Redis
+from urllib.parse import quote_plus
+from googlesearch import search
+
+import time
+
+
+class Catcher:
     name = 'serv_catcher'
 
-    controller = RpcProxy('controler'),
+    redis = Redis(host='localhost', port=6379, db=0)
 
-    @http('GET', '/crawler/<string:query>')
-    def get_cache(self, request, query):
+    @rpc
+    def get_links(self,n_search):
 
-        if query:
+        search_str = self.redis.get('string')
 
-            try:
-                dicts = self.controller.controller(query)
+        #Transform the string into a URL Standard
+        search_str = quote_plus(search_str)
 
-            except Exception as e:
-                print("Couldn't connect to Crawler Service")
+        count=1
 
-
-            return dicts
-
+        #Generates links from google
+        for url in search(search_str,stop=n_search):
 
 
+            #Send the link to Redis DB with link1, link2.. keys
+            lnk_n = str(count)
+            self.redis.set("link"+lnk_n,url)
+
+            count+=1
+            print(f"Link {url} has got with success!")
+
+            #Time to avoid be blocked by Google
+            time.sleep(2)
 
 
-
+        return

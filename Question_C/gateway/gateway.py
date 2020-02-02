@@ -23,7 +23,7 @@ def get_query(query):
                 query = rpc.serv_controller.controller(query)
 
         except Exception as e:
-            return "Couldn't connect to Crawler Service"
+            return f"Couldn't connect to Crawler Service, error: {e}"
 
 
         return query
