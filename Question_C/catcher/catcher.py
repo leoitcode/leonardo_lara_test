@@ -12,12 +12,12 @@ import time
 class Catcher:
     name = 'serv_catcher'
 
-    redis = Redis(host='localhost', port=6379, db=0)
+    r = Redis(host='localhost', port=6379, db=0)
 
     @rpc
     def get_links(self,n_search):
 
-        search_str = self.redis.get('string')
+        search_str = self.r.get('string')
 
         #Transform the string into a URL Standard
         search_str = quote_plus(search_str)
@@ -30,7 +30,9 @@ class Catcher:
 
             #Send the link to Redis DB with link1, link2.. keys
             lnk_n = str(count)
-            self.redis.set("link"+lnk_n,url)
+            self.r.set("link"+lnk_n,url,ex=5)
+
+            self.r.set("res_link"+lnk_n,url,ex=5)
 
             count+=1
             print(f"Link {url} has got with success!")

@@ -7,25 +7,26 @@ class Controller:
     name = 'serv_controller'
 
     catcher = RpcProxy('serv_catcher')
-    #crawler = RpcProxy('serv_crawler')
+    crawler = RpcProxy('serv_crawler')
     #interpreter = RpcProxy('serv_interpreter')
 
-    redis = Redis(host='localhost', port=6379, db=0)
+    r = Redis(host='localhost', port=6379, db=0)
+    r.flushall()
 
 
 
     @rpc
-    def controller(self,query):
+    def controller(self,query,n_search):
 
-        self.redis.set("string",query)
+        self.r.set("string",query)
 
-        self.catcher.get_links.call_async(n_search=5)
+        self.catcher.get_links.call_async(n_search)
         
         self.crawler.get_crawls.call_async()
 
         #self.interpreter.get_insights.call_async()
 
-        return
+        return "Deu certo"
 
 
 
