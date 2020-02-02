@@ -1,7 +1,6 @@
-import json
-import random
 
 from nameko.rpc import RpcProxy,rpc
+from redis import Redis
 
 
 class Controller:
@@ -9,17 +8,25 @@ class Controller:
 
     catcher = RpcProxy('serv_catcher')
     crawler = RpcProxy('serv_crawler')
-    interpreter = RpcProxy('serv_interpreter')
+    #interpreter = RpcProxy('serv_interpreter')
+
+    r = Redis(host='localhost', port=6379, db=0)
+    r.flushall()
+
 
 
     @rpc
-    def controller(self,query):
+    def controller(self,query,n_search):
 
-        self.catcher.get_links.call_async()
+        self.r.set("string",query)
 
+        self.catcher.get_links.call_async(n_search)
+        
         self.crawler.get_crawls.call_async()
 
-        self.interpreter.get_insights.call_async()
+        #self.interpreter.get_insights.call_async()
+
+        return "Deu certo"
 
 
 

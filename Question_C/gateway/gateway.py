@@ -17,13 +17,15 @@ def get_query(query):
 
         print(query)
 
+        num = request.args.get('num',default = 5,type = int)
+
         try:
 
             with ClusterRpcProxy(CONFIG) as rpc:
-                query = rpc.serv_controller.controller(query)
+                query = rpc.serv_controller.controller(query,num)
 
         except Exception as e:
-            return "Couldn't connect to Crawler Service"
+            return f"Couldn't connect to Crawler Service, error: {e}"
 
 
         return query
