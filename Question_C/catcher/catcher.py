@@ -1,5 +1,6 @@
 
 import requests
+import time
 
 from nameko.rpc import rpc
 from redis import Redis
@@ -7,11 +8,17 @@ from urllib.parse import quote_plus
 from googlesearch import search
 from loguru import logger as log
 
-import time
+
 
 
 class Catcher:
     name = 'serv_catcher'
+
+    ''' Nameko Service serv_catcher for catch links 
+        and send in real time to Crawler service
+
+        SET: Put links inside REDIS DataBase to any Crawler Service get
+    '''
 
     r = Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
@@ -21,6 +28,7 @@ class Catcher:
 
         log.info("-- STARTING CATCHER --")
 
+        #Persist String key with Search Term
         search_str = self.r.get('string')
         self.r.set("string",search_str)
 
@@ -31,11 +39,11 @@ class Catcher:
         #Generates links from google
         for url in search(search_str,stop=n_search):
 
-
+            #Check if the URL already exists in the list
             if self.isOnList(url):
                 continue
 
-            #Add in Redis "links" list
+            #Create a Redis list and put url on Right (rpush)
             self.r.rpush("links",url)
             self.r.rpush("bak_links",url)
 
@@ -52,10 +60,15 @@ class Catcher:
 
     def isOnList(self,url):
 
+        ''' This function checks if the URL is repeated.
+        '''
+
         urlb = url.encode()
 
+        #Iterate over link list
         for i in range(0, self.r.llen("links")+1):
-    
+            
+            #Check if url is on list
             v = self.r.lindex("links", i)
 
             if v==urlb:

@@ -11,7 +11,9 @@ Swagger(app)
 
 CONFIG = {'AMQP_URI': "amqp://guest:guest@localhost:5672"}
 
-log_file_name = './logs/' + 'crawler' + '.log'
+
+#Log Configuration
+log_file_name = '../logs/' + 'today' + '.log'
 
 log.add(
     log_file_name,
@@ -25,14 +27,20 @@ log.add(
 @app.route('/crawler/<string:query>')
 def get_query(query):
 
+    '''This gateway receive GET requisitions and return a response
+    '''
+
+
     if query:
 
         log.info("-- STARTING THE CRAWLER --")
 
+        #Check args "num" is set
         num = request.args.get('num',default = 5,type = int)
 
-        try:
+        try:    
 
+            #Create a Proxy RPC to control RPC Services
             with ClusterRpcProxy(CONFIG) as rpc:
                 response = rpc.serv_controller.controller(query,num)
                 log.debug("-- CRAWLING COMPLETE --")
