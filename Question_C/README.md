@@ -67,7 +67,7 @@ SEARCH: "keystone - Circular reference found role inference"
 
 SEARCH: "space"
 ![](../images/response4.jpg)
-![](../images/response0.jpg)
+![](../images/response0.png)
 
 SEARCH: "Data Science"
 ![](../images/response3.jpg)
