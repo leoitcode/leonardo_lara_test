@@ -64,6 +64,9 @@ class Controller:
 
                 log.info("Received Crawled page")
 
+                if count == 4:
+                    self.insights = [ins] + self.insights
+
                 self.insights.append(ins)
                 log.info("-- WAITING FOR DATA...")
 

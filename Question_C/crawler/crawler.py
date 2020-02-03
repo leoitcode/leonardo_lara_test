@@ -113,8 +113,13 @@ class Crawler:
         #Initial links from Catcher
         initial_links = self.r.lrange("bak_links", 0, -1)
 
+
         #Store all information in result dictionary
-        result = {'links':initial_links,'sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
+        if self.r.llen("bak_links") == 5:
+            result = {'links':initial_links,'sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
+        else:
+            result = {'sentence':search_str,'text':text,'title':title,'subtitles':subtitles,'code':code,'lists':lists}
+
 
         #Convert a dictionary into string json.
         result = json.dumps(result)
