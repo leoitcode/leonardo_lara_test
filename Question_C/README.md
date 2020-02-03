@@ -8,7 +8,7 @@ Technologies: Docker, Docker-compose, Flask, Python3.6/3.7, RabbitMQ, Nameko RPC
 
 Usage: Request a query in the exposed api: http://0.0.0.0/5000/crawler/query
 
-<div style="text-align: center">![](../images/diagram_crawler.png)</div>
+![](../images/diagram_crawler.png)
 
 
 # How it Works
