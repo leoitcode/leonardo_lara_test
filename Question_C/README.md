@@ -16,25 +16,26 @@ Usage: Request a query in the exposed api: http://0.0.0.0/5000/crawler/"query"
 The system has:
 
 
-- Scalability
-The services are expandable to any number you want. 
+- Scalability:
+The services are expandable to any number you want.   
 The Catcher service has a limitation described below (Limitations)
 
-- Compatibility
-Due the fact that each service is in a container, you can easily change the environment for modules,
-versions and installations for that specific service.
+- Compatibility:
+Due the fact that each service is in a container, you can easily change the environment for modules,  
+versions and installations for that specific service to another possibility.
 
-- Maintainability
-It's possible to change a code in a service without affect others services.
+- Maintainability:
+It's possible to change a code in a service without affect others services.  
 The maintenance of the system could be a few changes in docker-compose or dockerfile.
+The whole operation is logged and you can check any problems or outliers in system.
 
-- Uninterruptibility/Continuity
+- Uninterruptibility/Continuity:
 If a service is down the structure will try restart or up another service to continue the operation.
 
-- Quality
+- Quality:
 The Crawler get good parts of the text, lists, and other tags and returns a JSON String.
 
-- Testability
+- Testability:
 The system could be tested in a row, but with a break time to avoid block from Google.
 
 
