@@ -1,10 +1,12 @@
-# Google Crawler
+# Crawler
 
 This Crawler get all information from the mainly pages from google, information like lists, text, code and etc.
 
 The Architecture is based on Microservices in which services has specific tasks and are connected by protocol.
 
 Technologies: Docker, Docker-compose, Flask, Python3.6/3.7, RabbitMQ, Nameko RPC, Redis, NLTK
+
+![](../images/diagram_crawler.png)
 
 # How it Works
 
@@ -33,3 +35,13 @@ Crawl the link getting all tags
 Tokenize and Remove STOPWORDS using NLTK (Natural Language Tool Kit)  
 Find for specific tags and pattern on text  
 Store the results in a Redis List ("crawls")
+
+# How to install
+
+- Install Docker ([LINK](https://docs.docker.com/install/))
+- Install Docker-compose
+- On the root dir execute:
+
+    <code> docker-compose up </code>
+
+- Access Server HTTP exposed PORT 0.0.0.0/5000
