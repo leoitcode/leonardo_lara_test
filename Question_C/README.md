@@ -6,7 +6,10 @@ The Architecture is based on Microservices in which services has specific tasks 
 
 Technologies: Docker, Docker-compose, Flask, Python3.6/3.7, RabbitMQ, Nameko RPC, Redis, NLTK
 
-![](../images/diagram_crawler.png)
+Usage: Request a query in the exposed api: http://0.0.0.0/5000/crawler/query
+
+<div style="text-align: center">![](../images/diagram_crawler.png)</div>
+
 
 # How it Works
 
@@ -36,6 +39,7 @@ Tokenize and Remove STOPWORDS using NLTK (Natural Language Tool Kit)
 Find for specific tags and pattern on text  
 Store the results in a Redis List ("crawls")
 
+
 # How to install
 
 - Install Docker ([LINK](https://docs.docker.com/install/))
@@ -44,4 +48,9 @@ Store the results in a Redis List ("crawls")
 
     <code> docker-compose up </code>
 
-- Access Server HTTP exposed PORT 0.0.0.0/5000
+- Access Server HTTP exposed 0.0.0.0/5000
+
+
+# Limitations
+
+I'm not able to do many requests or increase workers in the system because surely google will block my IP.
