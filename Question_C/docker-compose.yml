@@ -2,62 +2,92 @@
 version: "2"
 
 services:
-  
+
+  gateway:
+    build:
+      context: gateway
+    ports:
+      - "5000:5000"
+    environment:
+      RABBIT_PASSWORD: "guest"
+      RABBIT_USER: "guest"
+      RABBIT_HOST: rabbit
+      RABBIT_PORT: "5672"
+
+    depends_on:
+      - waitforrabbit
+
+
+  redis:
+    image: redis:4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    hostname: redis
+    volumes:
+      - ./data:/data
+
+
   rabbit:
     image: rabbitmq:3.7-management
     ports:
         - "15673:15672"
         - "5672:5672"
+
     restart: always
 
-  server:
+
+  catcher:
     build:
-      context: server
+      context: catcher
+
     depends_on:
       - waitforrabbit
-    ports:
-      - "8000:8000"
+      - redis
+
     environment:
+        REDIS_HOST: redis
+        REDIS_PORT: "6379"
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
         RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
-  can:
+
+  controller:
     build:
-      context: can
+      context: controller
+
     depends_on:
       - waitforrabbit
+      - redis
+
     environment:
+        REDIS_HOST: redis
+        REDIS_PORT: "6379"
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
         RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
-  usa:
+
+  crawler:
     build:
-      context: usa
+      context: crawler
     depends_on:
       - waitforrabbit
+      - redis
+
     environment:
+        REDIS_HOST: redis
+        REDIS_PORT: "6379"
         RABBIT_PASSWORD: "guest"
         RABBIT_USER: "guest"
         RABBIT_HOST: rabbit
         RABBIT_PORT: "5672"
 
-  bra:
-    build:
-      context: bra
-    depends_on:
-      - waitforrabbit
-    environment:
-        RABBIT_PASSWORD: "guest"
-        RABBIT_USER: "guest"
-        RABBIT_HOST: rabbit
-        RABBIT_PORT: "5672"
 
   waitforrabbit:
     image: dadarek/wait-for-dependencies
     depends_on:
       - rabbit
+
     command: rabbit:5672

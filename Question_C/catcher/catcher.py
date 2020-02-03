@@ -1,6 +1,7 @@
 
 import requests
 import time
+import os
 
 from nameko.rpc import rpc
 from redis import Redis
@@ -20,7 +21,10 @@ class Catcher:
         SET: Put links inside REDIS DataBase to any Crawler Service get
     '''
 
-    r = Redis(host='localhost', port=6379, db=0, decode_responses=True)
+    R_HOST = os.getenv('REDIS_HOST')
+    R_PORT = os.getenv('REDIS_PORT')
+
+    r = Redis(host=R_HOST, port=R_PORT, db=0, decode_responses=True)
 
     @rpc
     def get_links(self,n_search):

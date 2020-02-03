@@ -4,6 +4,7 @@ from loguru import logger as log
 
 import json
 import time
+import os
 
 
 class Controller:
@@ -19,7 +20,10 @@ class Controller:
     catcher = RpcProxy('serv_catcher')
     crawler = RpcProxy('serv_crawler')
 
-    r = Redis(host='localhost', port=6379, db=0, decode_responses=True)
+    R_HOST = os.getenv('REDIS_HOST')
+    R_PORT = os.getenv('REDIS_PORT')
+
+    r = Redis(host=R_HOST, port=R_PORT, db=0, decode_responses=True)
     
     insights = []
     
@@ -61,13 +65,13 @@ class Controller:
                 log.info("Received Crawled page")
 
                 self.insights.append(ins)
+                log.info("-- WAITING FOR DATA...")
 
                 count+=1
                 time.sleep(2)
 
-
             time.sleep(1)
-            log.info("-- WAITING FOR DATA...")
+            
 
         return self.insights
 
