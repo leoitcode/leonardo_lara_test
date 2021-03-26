@@ -31,7 +31,7 @@ nltk==3.4.5
 path==13.1.0
 path.py==12.4.0
 pyrsistent==0.15.7
-PyYAML==5.3
+PyYAML==5.4
 redis==3.4.0
 requests==2.22.0
 six==1.14.0
